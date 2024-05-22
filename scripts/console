@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require 'dotenv/load'
+require 'pathname'
+require 'irb'
+
+ROOT_DIR = Pathname.new File.expand_path('../..', __FILE__)
+require (ROOT_DIR / 'lib' / 'catkb').to_s
+
+IRB.start
