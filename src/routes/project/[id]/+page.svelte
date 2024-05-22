@@ -1,0 +1,32 @@
+<script lang="ts">
+    import ActionBar from '$components/ActionBar.svelte';
+
+    import type { PageData } from './$types';
+    export let data: PageData;
+</script>
+
+<svelte:head>
+    <title>{data.title}</title>
+</svelte:head>
+
+<h1>{data.title}</h1>
+<ActionBar>
+    <li><a href="/project/{data.id}/edit">Edit</a></li>
+    <li><a href="/project/{data.id}/barcode">Assign barcode</a></li>
+    <li><a href="/project/{data.id}/contain">Contain</a></li>
+</ActionBar>
+
+<ul class="attrlist">
+    {#if data.within.length}
+        <li>
+            <strong>Found in:</strong>
+            {#each data.within as ctr}
+                <a href="/container/{ctr}">{ctr}</a>
+            {/each}
+        </li>
+    {/if}
+</ul>
+
+{#if data.description}
+    <div class="notebody">{@html data.description}</div>
+{/if}
