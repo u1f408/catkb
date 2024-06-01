@@ -19,6 +19,10 @@ header.main-nav {
     margin: 0 0 1rem 0;
 }
 
+main {
+    position: relative;
+}
+
 main > h1 {
     margin: 0 0 1rem 0;
 }
@@ -86,6 +90,15 @@ ul.actionbar > li a {
 .bigform button,
 .bigform div.editor {
     margin-bottom: 1rem;
+}
+
+.barcodeDisplay {
+    display: block;
+    padding: 0.5rem;
+    width: 6rem;
+    height: 6rem;
+    height: auto;
+    float: right;
 }
 
 .message {

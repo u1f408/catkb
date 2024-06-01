@@ -9,6 +9,12 @@
     <title>{data.title}</title>
 </svelte:head>
 
+{#if data.barcode_svgs.length}
+    <aside class="barcodeDisplay">
+        {@html data.barcode_svgs[0]}
+    </aside>
+{/if}
+
 <h1>{data.title}</h1>
 <ActionBar>
     <li><a href="/project/{data.id}/edit">Edit</a></li>

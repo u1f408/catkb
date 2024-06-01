@@ -1,5 +1,10 @@
 import type { PageLoad } from './$types';
-import { storeFetch } from '$lib/storeFetch';
+import { storeFetch, storeFetchPlain } from '$lib/storeFetch';
 
-export const load: PageLoad = async ({ fetch, params }) =>
-    await storeFetch({ fetch }, ['project', params.id]);
+export const load: PageLoad = async ({ fetch, params }) => {
+    let resp = await storeFetch({ fetch }, ['project', params.id]);
+    resp.barcode_svgs = await Promise.all(resp.barcodes.map((bar: string) =>
+        storeFetchPlain({ fetch }, ['barcode.svg'], { id: bar }).then((req) => req.text())));
+
+    return resp;
+};
