@@ -11,6 +11,10 @@
           buildInputs = with pkgs; [
             ruby_3_2
             postgresql
+
+            cargo
+            rustc
+
             httpie
           ];
         };

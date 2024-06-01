@@ -1,4 +1,16 @@
 class CatKB::StoreApi
+  get '/v1/barcode.svg' do
+    barcode = request.params['id']&.strip
+    cached = CatKB.cache.hget("barcode_cache", barcode)
+    unless cached
+      cached = CatKB.generate_barcode_svg(barcode)
+      CatKB.cache.hset("barcode_cache", barcode, cached)
+    end
+
+    content_type 'image/svg+xml'
+    cached
+  end
+
   post '/v1/barcode' do
     patch = body_json()
     patch[:id] ||= CatKB.generate_barcode
