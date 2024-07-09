@@ -13,7 +13,9 @@ module CatKB
 end
 
 require_relative 'catkb/version'
+require_relative 'catkb/utils'
 require_relative 'catkb/database'
 require_relative 'catkb/cache'
 require_relative 'catkb/binvoke'
 require_relative 'catkb/barcode'
+require_relative 'catkb/workers'

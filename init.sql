@@ -10,11 +10,15 @@ create table if not exists notes (
     body text
 );
 
+alter table only notes alter column id set default generate_id();
+
 create table if not exists projects (
     id text primary key,
     title text not null,
     description text
 );
+
+alter table only projects alter column id set default generate_id();
 
 create table if not exists parts (
     id text primary key,
@@ -23,11 +27,15 @@ create table if not exists parts (
     count_onhand integer not null default 0
 );
 
+alter table only parts alter column id set default generate_id();
+
 create table if not exists containers (
     id text primary key,
     title text not null,
     location text
 );
+
+alter table only containers alter column id set default generate_id();
 
 create table if not exists container_contents (
     id text primary key,
@@ -35,6 +43,10 @@ create table if not exists container_contents (
     ptr_type text not null,
     ptr_id text not null
 );
+
+alter table only container_contents alter column id set default generate_id();
+alter table container_contents drop constraint if exists container_contents_container_fk;
+alter table container_contents add constraint container_contents_container_fk foreign key (container) references containers (id) on update cascade on delete cascade;
 
 create table if not exists serial_lookup_apple (
     sn text primary key,
@@ -44,3 +56,23 @@ create table if not exists serial_lookup_apple (
     configuration_code text,
     updated timestamp not null default NOW()::timestamp
 );
+
+create table if not exists package_tracking (
+    track_no text primary key,
+    carrier text not null,
+    notes text,
+    completed boolean default false,
+    updated timestamp not null default NOW()::timestamp
+);
+
+create table if not exists package_tracking_updates (
+    id text primary key,
+    track_no text not null,
+    status text not null,
+    description text,
+    updated timestamp not null default NOW()::timestamp
+);
+
+alter table only package_tracking_updates alter column id set default generate_id();
+alter table package_tracking_updates drop constraint if exists package_tracking_updates_track_no_fk;
+alter table package_tracking_updates add constraint package_tracking_updates_track_no_fk foreign key (track_no) references package_tracking (track_no) on update cascade on delete cascade;

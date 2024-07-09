@@ -1,0 +1,5 @@
+:scheduler:
+  :schedule:
+    PackageTrackingUpdateNonCompleted:
+      cron: '30 */20 * * * *'
+      class: 'CatKB::PackageTrackingUpdateNonCompletedWorker'
