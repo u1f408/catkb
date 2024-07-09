@@ -16,6 +16,9 @@
             rustc
 
             httpie
+            imagemagick
+            pngcrush
+            librsvg
           ];
         };
       };

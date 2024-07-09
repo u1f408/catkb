@@ -1,0 +1,62 @@
+#!/usr/bin/env ruby
+require 'dotenv/load'
+require 'pathname'
+
+ROOT_DIR = Pathname.new File.expand_path('../..', __FILE__)
+require ROOT_DIR / 'lib' / 'catkb'
+require ROOT_DIR / 'lib' / 'catkb' / 'pdfgen'
+
+case (subcmd = ARGV[0] || 'help')
+when "help"
+  puts "usage: #{__FILE__} ..."
+  puts ""
+  puts "subcommands:"
+  puts "\tgenerate <type> <layout> [pagecount]: generate a pdf"
+  puts "\tlayouts <type>: print list of available layouts"
+  puts "\thelp: this help message"
+  puts
+  puts "PDF types:"
+  puts "\tBarcodeLabels"
+  puts ""
+  exit 0
+
+when "generate"
+  mod = CatKB::PdfGen.const_get(ARGV[1]&.to_sym)
+  unless mod
+    puts "unknown type: #{ARGV[1]&.to_sym}"
+    puts "see #{__FILE__} help"
+    exit 1
+  end
+
+  layout = mod.const_get(:LAYOUTS)[ARGV[2]]
+  unless layout
+    puts "unknown layout: #{ARGV[2]}"
+    puts "see #{__FILE__} help"
+    exit 1
+  end
+
+  pagecount = (ARGV[3] || '1').to_i
+  filename = "./#{ARGV[1]}_#{Time.now.to_i}.pdf"
+
+  doc = mod.document_for(layout, pagecount)
+  doc.write(filename)
+  puts "written to #{filename}"
+  exit 0
+
+when "layouts"
+  mod = CatKB::PdfGen.const_get(ARGV[1]&.to_sym)
+  unless mod
+    puts "unknown type: #{ARGV[1]&.to_sym}"
+    puts "see #{__FILE__} help"
+    exit 1
+  end
+
+  puts "available layouts for #{ty}:"
+  puts "\t" + mod.const_get(:LAYOUTS).keys.join("\n\t")
+  exit 0
+
+else
+  puts "unknown subcommand: #{subcmd.inspect}"
+  puts "see #{__FILE__} help"
+  exit 1
+end

@@ -1,8 +1,17 @@
+GIT
+  remote: https://github.com/againstprisons/rcpdflayout.git
+  revision: c6f3b3398fb607f4961a881e5a1423d3d2492456
+  specs:
+    rcpdflayout (0.1.0.pre.2)
+      commonmarker (~> 0.22)
+      mini_magick (~> 4.11)
+
 GEM
   remote: https://rubygems.org/
   specs:
     base64 (0.2.0)
     bigdecimal (3.1.6)
+    commonmarker (0.23.10)
     connection_pool (2.4.1)
     csv (3.3.0)
     dotenv (3.1.0)
@@ -10,6 +19,7 @@ GEM
       csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
+    mini_magick (4.12.0)
     mini_mime (1.1.5)
     multi_xml (0.7.1)
       bigdecimal (~> 3.1)
@@ -49,6 +59,7 @@ DEPENDENCIES
   httparty (~> 0.22)
   pg (~> 1.5, >= 1.5.6)
   rackup (~> 2.1)
+  rcpdflayout!
   redis (~> 5.2)
   sequel (~> 5.78)
   sinatra (~> 4.0)

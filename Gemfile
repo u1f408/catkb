@@ -9,3 +9,4 @@ gem 'sinatra', '~> 4.0'
 gem 'rackup', '~> 2.1'
 
 gem 'httparty', '~> 0.22'
+gem 'rcpdflayout', git: 'https://github.com/againstprisons/rcpdflayout.git'
