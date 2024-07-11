@@ -62,6 +62,7 @@ create table if not exists package_tracking (
     carrier text not null,
     notes text,
     completed boolean default false,
+    marked timestamp,
     updated timestamp not null default NOW()::timestamp
 );
 
