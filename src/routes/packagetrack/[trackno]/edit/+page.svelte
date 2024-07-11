@@ -1,7 +1,7 @@
 <script lang="ts">
     import HeaderParentLink from '$components/HeaderParentLink.svelte';
 
-    import { storePatch } from '$lib/storeFetch';
+    import { storePost, storePatch } from '$lib/storeFetch';
     import { goto } from '$app/navigation';
     import type { PageData } from './$types';
 
@@ -22,6 +22,20 @@
 
         return await goto(`/packagetrack/${data.track_no}`);
     }
+
+    async function mark(e: SubmitEvent) {
+        e.preventDefault();
+
+        error = null;
+        try {
+            await storePost({ fetch }, ['package_tracking', data.track_no, 'mark'], {});
+        } catch (ex: any) {
+            error = `Failed to update: ${ex.toString()}`;
+            return;
+        }
+
+        return await goto(`/packagetrack/${data.track_no}`);
+    }
 </script>
 
 <svelte:head>
@@ -30,7 +44,12 @@
 
 <h1>
     <HeaderParentLink href="/packagetrack/{data.track_no}" />
-    Edit package: <code>{data.track_no}</code> (<code>{data.carrier}</code>)
+    Edit package:
+    {#if data.notes}
+        {data.notes}
+    {/if}{#if !data.notes}
+        <code>{data.track_no}</code> ({data.carrier})
+    {/if}
 </h1>
 
 {#if error}<div class="message error">{error}</div>{/if}
@@ -45,4 +64,8 @@
     </label>
 
     <button type="submit">Update</button>
+</form>
+
+<form on:submit={(e) => mark(e)} class="bigform">
+    <button type="submit">Mark</button>
 </form>

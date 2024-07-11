@@ -12,7 +12,12 @@
 
 <h1>
     <HeaderParentLink href="/packagetrack" />
-    Package: <code>{data.track_no}</code> (<code>{data.carrier}</code>)
+    Package:
+    {#if data.notes}
+        {data.notes}
+    {/if}{#if !data.notes}
+        <code>{data.track_no}</code> ({data.carrier})
+    {/if}
 </h1>
 
 <ActionBar>
@@ -20,17 +25,34 @@
 </ActionBar>
 
 <ul class="attrlist">
-    <li>
-        <strong>Last fetched:</strong>
-        {data.updated}
-    </li>
-
     {#if data.notes}
         <li>
             <strong>Notes:</strong>
             {data.notes}
         </li>
     {/if}
+
+    {#if data.marked}
+        <li>
+            <strong>Marked:</strong>
+            {data.marked}
+        </li>
+    {/if}
+
+    <li>
+        <strong>Tracking number:</strong>
+        <code>{data.track_no}</code>
+    </li>
+
+    <li>
+        <strong>Carrier:</strong>
+        <code>{data.carrier}</code>
+    </li>
+
+    <li>
+        <strong>Last fetched:</strong>
+        {data.updated}
+    </li>
 
     <li>
         <strong>Tracking updates:</strong>
