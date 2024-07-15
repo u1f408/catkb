@@ -37,8 +37,13 @@
                             <code>{obj.track_no}</code> ({obj.carrier})
                         {/if}
                     </a> -
-                    {obj.latest_update.description}
-                    ({obj.latest_update.updated})
+                    {#if obj.latest_update}
+                        {obj.latest_update.description}
+                        ({obj.latest_update.updated})
+                    {/if}
+                    {#if obj.latest_update == null}
+                        No updates
+                    {/if}
                 </li>
             {/each}
         </ul>
@@ -58,8 +63,13 @@
                             <code>{obj.track_no}</code> ({obj.carrier})
                         {/if}
                     </a> -
-                    {obj.latest_update.description}
-                    ({obj.latest_update.updated})
+                    {#if obj.latest_update}
+                        {obj.latest_update.description}
+                        ({obj.latest_update.updated})
+                    {/if}
+                    {#if obj.latest_update == null}
+                        No updates
+                    {/if}
                 </li>
             {/each}
         </ul>

@@ -57,6 +57,9 @@
     <li>
         <strong>Tracking updates:</strong>
         <ul>
+            {#if data.updates.length == 0}
+                <li>No updates yet!</li>
+            {/if}
             {#each data.updates as obj (obj.updated)}
                 <li>
                     <strong>{obj.status}</strong>:
