@@ -4,7 +4,7 @@ import { build, files, prerendered, version } from '$service-worker';
 const CACHE = `cache-${version}`;
 const ASSETS = [ ...build, ...files, ...prerendered, ];
 
-self.addEventListener('install', (event) => {
+self.addEventListener('install', (event: ExtendableEvent) => {
     async function addFilesToCache() {
         const cache = await caches.open(CACHE);
         await cache.addAll(ASSETS);
@@ -13,7 +13,7 @@ self.addEventListener('install', (event) => {
     event.waitUntil(addFilesToCache());
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', (event: ExtendableEvent) => {
     async function deleteOldCaches() {
         for (const key of await caches.keys()) {
             if (key !== CACHE) await caches.delete(key);
@@ -23,7 +23,7 @@ self.addEventListener('activate', (event) => {
     event.waitUntil(deleteOldCaches());
 });
 
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', (event: FetchEvent) => {
     if (event.request.method !== 'GET') return;
     const url = new URL(event.request.url);
     if (!ASSETS.includes(url.pathname)) return;
@@ -35,7 +35,7 @@ self.addEventListener('fetch', (event) => {
             if (response) return response;
         }
 
-        return;
+        return Promise.reject();
     }
 
     event.respondWith(respond());
