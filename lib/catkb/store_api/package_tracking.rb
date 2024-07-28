@@ -22,6 +22,7 @@ class CatKB::StoreApi
 
   post '/v1/package_tracking' do
     patch = body_json()
+    patch[:track_no].strip!
 
     data = CatKB.db[:package_tracking].where(track_no: patch[:track_no]).first
     next halt 400 if data
@@ -52,8 +53,7 @@ class CatKB::StoreApi
     data = CatKB.db[:package_tracking].where(track_no: tn).first
     next halt 404 unless data
 
-    patch = body_json()
-    %i[track_no carrier updates updated].map{ |n| patch.delete(n) }
+    patch = CatKB.cleanup_patch(:package_tracking, body_json())
     data.merge! patch
     CatKB.db[:package_tracking].where(track_no: tn).update(patch)
 

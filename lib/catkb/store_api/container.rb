@@ -1,7 +1,6 @@
 class CatKB::StoreApi
   post '/v1/container' do
-    patch = body_json()
-    %i[id barcodes within].map{ |n| patch.delete(n) }
+    patch = CatKB.cleanup_patch(:container, body_json())
     patch[:id] = CatKB.generate_id
     CatKB.db[:containers] << patch
 
@@ -31,8 +30,7 @@ class CatKB::StoreApi
     data = CatKB.db[:containers].where(id: id).first
     halt 404 if data.nil?
 
-    patch = body_json()
-    %i[id barcodes within].map{ |n| patch.delete(n) }
+    patch = CatKB.cleanup_patch(:container, body_json())
     data.merge! patch
     CatKB.db[:containers].where(id: id).update(patch)
 
@@ -59,7 +57,7 @@ class CatKB::StoreApi
     ctr = CatKB.db[:containers].where(id: id).first
     halt 404 if ctr.nil?
 
-    patch = body_json()
+    patch = CatKB.cleanup_patch(:container_contents, body_json())
     patch[:id] = CatKB.generate_id
     patch[:container] = ctr[:id]
     CatKB.db[:container_contents] << patch
@@ -74,8 +72,7 @@ class CatKB::StoreApi
     data = CatKB.db[:container_contents].where(container: id, id: cid).first
     halt 404 if data.nil?
 
-    patch = body_json()
-    %i[id].map{ |n| patch.delete(n) }
+    patch = CatKB.cleanup_patch(:container_contents, body_json())
     data.merge! patch
     CatKB.db[:container_contents].where(id: cid).update(patch)
 

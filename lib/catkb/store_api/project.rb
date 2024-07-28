@@ -1,7 +1,6 @@
 class CatKB::StoreApi
   post '/v1/project' do
-    patch = body_json()
-    %i[id barcodes within].map{ |n| patch.delete(n) }
+    patch = CatKB.cleanup_patch(:project, body_json())
     patch[:id] = CatKB.generate_id
     CatKB.db[:projects] << patch
 
@@ -23,8 +22,7 @@ class CatKB::StoreApi
     data = CatKB.db[:projects].where(id: id).first
     halt 404 if data.nil?
 
-    patch = body_json()
-    %i[id barcodes within].map{ |n| patch.delete(n) }
+    patch = CatKB.cleanup_patch(:project, body_json())
     data.merge! patch
     CatKB.db[:projects].where(id: id).update(patch)
 
