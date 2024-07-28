@@ -1,5 +1,5 @@
-import type { PageLoad } from './$types';
+import type { LayoutLoad } from './$types';
 import { storeFetch } from '$lib/storeFetch';
 
-export const load: PageLoad = async ({ fetch, params }) =>
+export const load: LayoutLoad = async ({ fetch, params }) =>
     await storeFetch({ fetch }, ['package_tracking', params.trackno], {});

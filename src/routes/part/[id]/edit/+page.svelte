@@ -3,7 +3,7 @@
     import Editor from '$components/Editor.svelte';
 
     import { storePatch } from '$lib/storeFetch';
-    import { goto } from '$app/navigation';
+    import { goto, invalidateAll } from '$app/navigation';
     import type { PageData } from './$types';
 
     export let data: PageData;
@@ -22,6 +22,7 @@
             return;
         }
 
+        await invalidateAll();
         return await goto(`/part/${data.id}`);
     }
 </script>

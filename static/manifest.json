@@ -1,6 +1,6 @@
 {
     "name": "CatKB",
-    "short_name": "catkb",
+    "short_name": "CatKB",
     "start_url": "/",
     "display": "standalone",
     "theme_color": "#ffc022",

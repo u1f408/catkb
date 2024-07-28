@@ -2,7 +2,7 @@
     import HeaderParentLink from '$components/HeaderParentLink.svelte';
 
     import { storePost, storePatch } from '$lib/storeFetch';
-    import { goto } from '$app/navigation';
+    import { goto, invalidateAll } from '$app/navigation';
     import type { PageData } from './$types';
 
     export let data: PageData;
@@ -20,6 +20,7 @@
             return;
         }
 
+        await invalidateAll();
         return await goto(`/packagetrack/${data.track_no}`);
     }
 
@@ -34,6 +35,7 @@
             return;
         }
 
+        await invalidateAll();
         return await goto(`/packagetrack/${data.track_no}`);
     }
 </script>

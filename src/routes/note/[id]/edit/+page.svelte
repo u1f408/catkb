@@ -3,7 +3,7 @@
     import Editor from '$components/Editor.svelte';
 
     import { storePatch } from '$lib/storeFetch';
-    import { goto } from '$app/navigation';
+    import { goto, invalidateAll } from '$app/navigation';
     import type { PageData } from './$types';
 
     export let data: PageData;
@@ -22,6 +22,7 @@
             return;
         }
 
+        await invalidateAll();
         return await goto(`/note/${data.id}`);
     }
 </script>
@@ -41,8 +42,8 @@
     <label for="title">Title:</label>
     <input type="text" id="title" name="title" placeholder="Title" value={data.title}>
 
-    <input type="hidden" name="description" value={body} />
-    <Editor id="description" label="Description:" bind:value={body} />
+    <input type="hidden" name="body" value={body} />
+    <Editor id="body" label="Body:" bind:value={body} />
 
     <button type="submit">Update</button>
 </form>
