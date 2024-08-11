@@ -1,0 +1,70 @@
+#!/usr/bin/env ruby
+require 'dotenv/load'
+require 'pathname'
+require 'readline'
+require 'tempfile'
+
+ROOT_DIR = Pathname.new File.expand_path('../..', __FILE__)
+require ROOT_DIR / 'lib' / 'catkb'
+
+def barcode_lookup(barcode)
+  bar = CatKB.db[:barcode_pointers].where(id: barcode).first
+  unless bar
+    puts "!! Barcode pointer does not exist"
+    return
+  end
+
+  display_item(bar[:ptr_type], bar[:ptr_id])
+end
+
+def display_item(ty, id)
+  data = CatKB.db[CatKB.db_table[ty]].where(id: id).first
+  unless data
+    puts "!! #{ty} #{id} does not exist"
+    return
+  end
+
+  contents = nil
+  if ty == 'container'
+    contents = CatKB.db[:container_contents].where(container: id).map do |ptr|
+      ch = CatKB.db[CatKB.db_table[ptr[:ptr_type]]].where(id: ptr[:ptr_id]).first
+      ch[:_type] = ptr[:ptr_type]
+      [ptr[:id], ch]
+    end.to_h
+  end
+
+  IO.popen("less -", 'w') do |f|
+    f.puts "#{ty} #{id}"
+    f.puts " #{data[:title].strip}"
+    f.puts (0..(data[:title].strip.length + 1)).map{'='}.join('')
+    f.puts
+
+    f.puts "Location: #{data[:location]}" unless data[:location].nil?
+    f.puts "Count: #{data[:count_onhand]}" unless data[:count_onhand].nil?
+    unless contents.nil?
+      f.puts
+      f.puts "Container contents:"
+      contents.values.each do |item|
+        f.puts "- #{item[:count_onhand].nil? ? '' : item[:count_onhand].to_s + 'x '}#{item[:title]} (#{item[:_type]} #{item[:id]})"
+      end
+    end
+
+    f.flush
+  end
+end
+
+trap "INT", "SIG_IGN"
+while buf = Readline.readline('CatKB> ', false)
+  buf.strip!
+  case buf.downcase
+  when ':q'
+    exit 0
+
+  else
+    if CatKB.db_table.keys.include?(buf.split(' ').first)
+      display_item(*buf.split(' ', 2))
+    else
+      barcode_lookup(buf)
+    end
+  end
+end
