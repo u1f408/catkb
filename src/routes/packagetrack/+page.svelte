@@ -33,16 +33,15 @@
                     <a href="/packagetrack/{obj.track_no}">
                         {#if obj.notes}
                             {obj.notes}
-                        {/if}{#if !obj.notes}
+                        {:else}
                             <code>{obj.track_no}</code> ({obj.carrier})
                         {/if}
                     </a> -
                     {#if obj.latest_update}
                         {obj.latest_update.description}
                         ({obj.latest_update.updated})
-                    {/if}
-                    {#if obj.latest_update == null}
-                        No updates
+                    {:else}
+                        No updates (yet!)
                     {/if}
                 </li>
             {/each}
@@ -59,16 +58,40 @@
                     <a href="/packagetrack/{obj.track_no}">
                         {#if obj.notes}
                             {obj.notes}
-                        {/if}{#if !obj.notes}
+                        {:else}
                             <code>{obj.track_no}</code> ({obj.carrier})
                         {/if}
                     </a> -
                     {#if obj.latest_update}
                         {obj.latest_update.description}
                         ({obj.latest_update.updated})
+                    {:else}
+                        No updates!?
                     {/if}
-                    {#if obj.latest_update == null}
-                        No updates
+                </li>
+            {/each}
+        </ul>
+    </section>
+{/if}
+
+{#if data.recent.length > 0}
+    <section>
+        <strong>Latest completed packages:</strong>
+        <ul>
+            {#each data.recent as obj (obj.track_no)}
+                <li>
+                    <a href="/packagetrack/{obj.track_no}">
+                        {#if obj.notes}
+                            {obj.notes}
+                        {:else}
+                            <code>{obj.track_no}</code> ({obj.carrier})
+                        {/if}
+                    </a> -
+                    {#if obj.latest_update}
+                        {obj.latest_update.description}
+                        ({obj.latest_update.updated})
+                    {:else}
+                        No updates!?
                     {/if}
                 </li>
             {/each}
