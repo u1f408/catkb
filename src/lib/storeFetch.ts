@@ -41,3 +41,12 @@ export async function storePatch({ fetch }: StoreParams, path: string[], body: R
     });
     return await req.json();
 }
+
+export async function storeDelete({ fetch }: StoreParams, path: string[], params = {}) {
+    var apiUrl = new URL(`${apiBase()}/v1/${path.join('/')}`);
+    Object.entries(params).forEach(([k, v]) => apiUrl.searchParams.set(k as string, v as any));
+    let req = await fetch(apiUrl.toString(), {
+        method: 'DELETE',
+    });
+    return req;
+}

@@ -18,7 +18,7 @@
 <h1>{data.title}</h1>
 <ActionBar>
     <li><a href="/part/{data.id}/edit">Edit</a></li>
-    <li><a href="/part/{data.id}/barcode">Assign barcode</a></li>
+    <li><a href="/part/{data.id}/barcode">Barcode</a></li>
     <li><a href="/part/{data.id}/contain">Contain</a></li>
 </ActionBar>
 

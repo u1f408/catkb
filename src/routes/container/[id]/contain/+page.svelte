@@ -44,5 +44,14 @@
     Contain: {data.title}
 </h1>
 
-<BarcodeInput onscan={submit} />
+{#if data.within.length}
+    <div class="message warning">
+        Already in one or more containers:
+        {#each data.within as ctr}
+            <a href="/container/{ctr}">{ctr}</a>
+        {/each}
+    </div>
+{/if}
+
 {#if error}<div class="message error">{error}</div>{/if}
+<BarcodeInput onscan={submit} />

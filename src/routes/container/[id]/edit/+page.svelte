@@ -1,7 +1,7 @@
 <script lang="ts">
     import HeaderParentLink from '$components/HeaderParentLink.svelte';
 
-    import { storePatch } from '$lib/storeFetch';
+    import { storePatch, storeDelete } from '$lib/storeFetch';
     import { goto, invalidateAll } from '$app/navigation';
     import type { PageData } from './$types';
 
@@ -23,6 +23,20 @@
         await invalidateAll();
         return await goto(`/container/${data.id}`);
     }
+
+    function submitChildRemove(child_id: string) {
+        return async function submitChildRemoveInner() {
+            error = null;
+            try {
+                await storeDelete({ fetch }, ['container', data.id, 'children', child_id], {});
+            } catch (ex: any) {
+                error = `Failed to remove child: ${ex.toString()}`;
+                return;
+            }
+
+            await invalidateAll();
+        }
+    }
 </script>
 
 <svelte:head>
@@ -36,7 +50,7 @@
 
 {#if error}<div class="message error">{error}</div>{/if}
 
-<form on:submit={(e) => submit(e)} class="bigform">
+<form onsubmit={submit} class="bigform">
     <label for="title">Title:</label>
     <input type="text" id="title" name="title" placeholder="Title" value={data.title}>
 
@@ -45,3 +59,25 @@
 
     <button type="submit">Update</button>
 </form>
+
+<section>
+    <strong>Container contents:</strong>
+
+    <ul class="attrlist">
+    {#each Object.keys<string>(data.children) as child_id}
+        <li>
+            {data.children[child_id]._type}
+            <code>{data.children[child_id].id}</code>:
+            <strong>{data.children[child_id].title}</strong>
+            (child <code>{child_id}</code>)
+
+            <br>
+            <button onclick={submitChildRemove(child_id)}>Remove</button>
+        </li>
+    {:else}
+        <li>
+            Empty :(
+        </li>
+    {/each}
+    </ul>
+</section>

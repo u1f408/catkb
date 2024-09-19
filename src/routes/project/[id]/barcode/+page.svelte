@@ -2,14 +2,14 @@
     import BarcodeInput from '$components/BarcodeInput.svelte';
     import HeaderParentLink from '$components/HeaderParentLink.svelte';
 
-    import { storeFetch, storePost } from '$lib/storeFetch';
+    import { storeFetch, storePost, storeDelete } from '$lib/storeFetch';
     import { goto, invalidateAll } from '$app/navigation';
     import type { PageData } from './$types';
 
     export let data: PageData;
     let error: string | null = null;
 
-    async function submit(input: string) {
+    async function submitAssign(input: string) {
         error = null;
         var barcode = null;
         try {
@@ -20,7 +20,7 @@
 
         try {
             await storePost({ fetch }, ['barcode'], {
-                id:input ,
+                id: input,
                 ptr_type: 'project',
                 ptr_id: data.id,
             });
@@ -32,6 +32,20 @@
         await invalidateAll();
         return await goto(`/project/${data.id}`);
     }
+
+    function submitRemove(input: string) {
+        return async function submitRemoveInner() {
+            error = null;
+            try {
+                await storeDelete({ fetch }, ['barcode'], { id: input });
+            } catch (nex: any) {
+                error = `??? ${nex.toString()}`;
+                return;
+            }
+
+            await invalidateAll();
+        }
+    }
 </script>
 
 <svelte:head>
@@ -40,14 +54,26 @@
 
 <h1>
     <HeaderParentLink href="/project/{data.id}" />
-    Assign barcode: {data.title}
+    Barcode: {data.title}
 </h1>
 
-{#if data.barcodes.length}
-<div class="message warning">
-    One or more barcodes are already assigned!
-</div>
-{/if}
-
-<BarcodeInput onscan={submit} />
 {#if error}<div class="message error">{error}</div>{/if}
+
+<section style="margin-bottom:1rem">
+    <BarcodeInput placeholder="Scan or enter a barcode to assign it" onscan={submitAssign} />
+</section>
+
+{#if data.barcodes.length}
+    <strong>Assigned barcodes:</strong>
+
+    <ul>
+    {#each data.barcodes as bc}
+        <li>
+            <code>{bc}</code>
+
+            <br>
+            <button onclick={submitRemove(bc)}>Remove</button>
+        </li>
+    {/each}
+    </ul>
+{/if}
