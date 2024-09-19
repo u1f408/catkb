@@ -141,6 +141,7 @@ module CatKB
       end
 
       if should_notify
+        sc = latest[:updates].sort { |a, b| b[:updated] <=> a[:updated] }.first
         notif_name = "#{metadata[:carrier]} - #{metadata[:track_no]}"
         notif_name = metadata[:notes] if (metadata[:notes]&.strip || '').length > 0
         CatKB::Pushover.send_notification("#{sc[:status]} - #{sc[:description]}", "Package scanned: #{notif_name}")
