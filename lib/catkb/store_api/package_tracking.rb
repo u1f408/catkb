@@ -14,9 +14,16 @@ class CatKB::StoreApi
       p
     end
 
+    recent = CatKB.db[:package_tracking].where(completed: true).exclude(marked: nil).order(Sequel.desc(:updated)).limit(limit).all
+    recent.map! do |p|
+      p[:latest_update] = CatKB.db[:package_tracking_updates].where(track_no: p[:track_no]).order(Sequel.desc(:updated)).first
+      p
+    end
+
     json({
       undelivered: undelivered,
       unmarked: unmarked,
+      recent: recent,
     })
   end
 
