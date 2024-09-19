@@ -131,11 +131,19 @@ module CatKB
         return
       end
 
+      should_notify = false
       latest[:updates].each do |sc|
         sc = sc.merge({ track_no: track_no, })
         unless CatKB.db[:package_tracking_updates].where(sc).count > 0
           CatKB.db[:package_tracking_updates] << sc
+          should_notify = true
         end
+      end
+
+      if should_notify
+        notif_name = "#{metadata[:carrier]} - #{metadata[:track_no]}"
+        notif_name = metadata[:notes] if (metadata[:notes]&.strip || '').length > 0
+        CatKB::Pushover.send_notification("#{sc[:status]} - #{sc[:description]}", "Package scanned: #{notif_name}")
       end
 
       completed = latest[:updates].map{ |x| x[:status] == 'delivered' }.any?
