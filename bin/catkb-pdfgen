@@ -44,9 +44,10 @@ when "generate"
   exit 0
 
 when "layouts"
-  mod = CatKB::PdfGen.const_get(ARGV[1]&.to_sym)
+  ty = ARGV[1]&.to_sym
+  mod = CatKB::PdfGen.const_get(ty)
   unless mod
-    puts "unknown type: #{ARGV[1]&.to_sym}"
+    puts "unknown type: #{ty}"
     puts "see #{__FILE__} help"
     exit 1
   end

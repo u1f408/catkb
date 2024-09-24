@@ -10,12 +10,14 @@ use self::encode::{EncodeRequest, EncodeResponse};
 #[serde(rename_all = "lowercase")]
 pub enum BarcodeFormat {
     Aztec,
+    Code128,
 }
 
 impl BarcodeFormat {
     pub fn to_rxing(self) -> RxingBarcodeFormat {
         match self {
             Self::Aztec => RxingBarcodeFormat::AZTEC,
+            Self::Code128 => RxingBarcodeFormat::CODE_128,
         }
     }
 }

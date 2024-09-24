@@ -17,9 +17,15 @@ module CatKB
     resp[:encode][:encoded_data]
   end
 
-  def self.generate_barcode_svg_batch(count, fmt = :aztec)
+  def self.generate_barcode_svg_batch(count, fmt = :aztec, dimensions = [24, 24])
     requests = (1..count).map do |n|
-      ["bar#{n}", {encode: {request_id: "bar#{n}", data: CatKB.generate_barcode, format: fmt}}]
+      ["bar#{n}", {encode: {
+        request_id: "bar#{n}",
+        data: CatKB.generate_barcode,
+        format: fmt,
+        width: dimensions.first,
+        height: dimensions.last,
+      }}]
     end.to_h
 
     responses = CatKB.binvoke(:catkb_barcoder) do |sin, sout, serr|
