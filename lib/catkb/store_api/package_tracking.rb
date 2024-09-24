@@ -48,6 +48,16 @@ class CatKB::StoreApi
     json(data)
   end
 
+  post '/v1/package_tracking/:tn' do |tn|
+    data = CatKB.db[:package_tracking].where(track_no: tn).first
+    next halt 404 unless data
+
+    CatKB::PackageTrackingUpdateSingleWorker.perform_sync(tn)
+
+    data[:updates] = CatKB.db[:package_tracking_updates].where(track_no: tn).order(Sequel.desc(:updated)).all
+    json(data)
+  end
+
   post '/v1/package_tracking/:tn/mark' do |tn|
     data = CatKB.db[:package_tracking].where(track_no: tn).first
     next halt 404 unless data
