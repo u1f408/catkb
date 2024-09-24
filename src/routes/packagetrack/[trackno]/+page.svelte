@@ -1,9 +1,14 @@
 <script lang="ts">
     import HeaderParentLink from '$components/HeaderParentLink.svelte';
     import ActionBar from '$components/ActionBar.svelte';
+    import { storePost } from '$lib/storeFetch';
 
     import type { PageData } from './$types';
     export let data: PageData;
+
+    async function forceRefresh() {
+        data = await storePost({ fetch }, ['package_tracking', data.track_no], {});
+    }
 </script>
 
 <svelte:head>
@@ -22,6 +27,7 @@
 
 <ActionBar>
     <li><a href="/packagetrack/{data.track_no}/edit">Edit</a></li>
+    <li><a href="?" onclick={forceRefresh}>Force refresh</a></li>
 </ActionBar>
 
 <ul class="attrlist">
