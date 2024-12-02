@@ -1,5 +1,4 @@
 <script lang="ts">
-    import Editor from '$components/Editor.svelte';
     import { storePost } from '$lib/storeFetch';
     import { goto } from '$app/navigation';
 
@@ -35,8 +34,8 @@
     <label for="title">Title:</label>
     <input type="text" id="title" name="title" placeholder="Title">
 
-    <input type="hidden" name="body" value={body} />
-    <Editor id="body" label="Body:" bind:value={body} />
+    <label for="body">Body:</label>
+    <textarea id="body" name="body"></textarea>
 
     <button type="submit">Create</button>
 </form>

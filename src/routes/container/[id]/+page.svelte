@@ -56,7 +56,3 @@
         </ul>
     </li>
 </ul>
-
-{#if data.description}
-    <div class="notebody">{@html data.description}</div>
-{/if}

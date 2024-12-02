@@ -38,6 +38,6 @@
     {/if}
 </ul>
 
-{#if data.description}
-    <div class="notebody">{@html data.description}</div>
+{#if data.description_html}
+    <div class="notebody">{@html data.description_html}</div>
 {/if}

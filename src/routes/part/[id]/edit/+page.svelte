@@ -1,13 +1,11 @@
 <script lang="ts">
     import HeaderParentLink from '$components/HeaderParentLink.svelte';
-    import Editor from '$components/Editor.svelte';
 
     import { storePatch } from '$lib/storeFetch';
     import { goto, invalidateAll } from '$app/navigation';
     import type { PageData } from './$types';
 
     export let data: PageData;
-    let description: string = data.description || '';
     let error: string | null = null;
 
     async function submit(e: SubmitEvent) {
@@ -45,8 +43,8 @@
     <label for="count_onhand">On hand:</label>
     <input type="number" id="count_onhand" name="count_onhand" min="0" step="1" value={data.count_onhand}>
 
-    <input type="hidden" name="description" value={description} />
-    <Editor id="description" label="Description:" bind:value={description} />
+    <label for="description">Description:</label>
+    <textarea name="description" id="description">{data.description}</textarea>
 
     <button type="submit">Update</button>
 </form>

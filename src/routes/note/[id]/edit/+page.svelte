@@ -1,6 +1,5 @@
 <script lang="ts">
     import HeaderParentLink from '$components/HeaderParentLink.svelte';
-    import Editor from '$components/Editor.svelte';
 
     import { storePatch } from '$lib/storeFetch';
     import { goto, invalidateAll } from '$app/navigation';
@@ -42,8 +41,8 @@
     <label for="title">Title:</label>
     <input type="text" id="title" name="title" placeholder="Title" value={data.title}>
 
-    <input type="hidden" name="body" value={body} />
-    <Editor id="body" label="Body:" bind:value={body} />
+    <label for="body">Body:</label>
+    <textarea id="body" name="body">{data.body}</textarea>
 
     <button type="submit">Update</button>
 </form>

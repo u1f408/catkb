@@ -1,9 +1,7 @@
 <script lang="ts">
-    import Editor from '$components/Editor.svelte';
     import { storePost } from '$lib/storeFetch';
     import { goto } from '$app/navigation';
 
-    let description: string = "";
     let error: string | null = null;
     async function submit(e: SubmitEvent) {
         e.preventDefault();
@@ -38,8 +36,8 @@
     <label for="count_onhand">On hand:</label>
     <input type="number" id="count_onhand" name="count_onhand" min="0" step="1">
 
-    <input type="hidden" name="description" value={description} />
-    <Editor id="description" label="Description:" bind:value={description} />
+    <label for="description">Description:</label>
+    <textarea name="description" id="description"></textarea>
 
     <button type="submit">Create</button>
 </form>

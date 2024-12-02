@@ -1,13 +1,11 @@
 <script lang="ts">
     import HeaderParentLink from '$components/HeaderParentLink.svelte';
-    import Editor from '$components/Editor.svelte';
 
     import { storePatch } from '$lib/storeFetch';
     import { goto, invalidate, invalidateAll } from '$app/navigation';
     import type { PageData } from './$types';
 
     export let data: PageData;
-    let description: string = data.description || '';
     let error: string | null = null;
 
     async function submit(e: SubmitEvent) {
@@ -42,8 +40,8 @@
     <label for="title">Title:</label>
     <input type="text" id="title" name="title" placeholder="Title" value={data.title}>
 
-    <input type="hidden" name="description" value={description} />
-    <Editor id="description" label="Description:" bind:value={description} />
+    <label for="description">Description:</label>
+    <textarea name="description" id="description">{data.description}</textarea>
 
     <button type="submit">Update</button>
 </form>

@@ -18,6 +18,6 @@
     <!-- meow -->
 </ul>
 
-{#if data.body}
-    <div class="notebody">{@html data.body}</div>
+{#if data.body_html}
+    <div class="notebody">{@html data.body_html}</div>
 {/if}
