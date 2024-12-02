@@ -1,10 +1,12 @@
+require 'redcarpet'
+
 module CatKB
   PATCH_CLEANUP_OPTS = {
-    :note => { strip: %i[body], },
+    :note => { strip: %i[body], remove: %i[body_html], },
     :container => { strip: %i[location], },
     :container_contents => { remove: %i[container], },
-    :project => { strip: %i[description], },
-    :part => { strip: %i[description], },
+    :project => { strip: %i[description], remove: %i[description_html], },
+    :part => { strip: %i[description], remove: %i[description_html], },
     :package_tracking => { remove: %i[track_no carrier updates updated], },
   }
 
@@ -24,5 +26,18 @@ module CatKB
     CatKB::PATCH_CLEANUP_OPTS[ty]&.[](:strip)&.map { |n| patch[n] = patch[n]&.strip }
 
     patch
+  end
+
+  def render_markdown(data)
+    return nil if data.nil? || data&.strip&.empty?
+    @@renderer ||= Redcarpet::Markdown.new(
+      Redcarpet::Render::HTML.new(no_styles: true, hard_wrap: true),
+      autolink: false,
+      tables: true,
+      fenced_code_blocks: true,
+      disable_indented_code_blocks: true,
+    )
+
+    @@renderer.render(data)
   end
 end

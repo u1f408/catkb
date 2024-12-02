@@ -43,6 +43,7 @@ GEM
     rackup (2.1.0)
       rack (>= 3)
       webrick (~> 1.8)
+    redcarpet (3.6.0)
     redis (5.2.0)
       redis-client (>= 0.22.0)
     redis-client (0.22.2)
@@ -82,6 +83,7 @@ DEPENDENCIES
   pg (~> 1.5, >= 1.5.6)
   rackup (~> 2.1)
   rcpdflayout!
+  redcarpet (~> 3.6)
   redis (~> 5.2)
   sequel (~> 5.78)
   sidekiq (~> 7.3)

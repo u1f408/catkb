@@ -14,6 +14,7 @@ class CatKB::StoreApi
   post '/v1/barcode' do
     patch = body_json()
     patch[:id] ||= CatKB.generate_barcode
+    patch[:id].strip!
     CatKB.db[:barcode_pointers] << patch
 
     data = CatKB.db[:barcode_pointers].where(id: patch[:id]).first

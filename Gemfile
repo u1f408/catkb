@@ -5,6 +5,7 @@ gem 'sequel', '~> 5.78'
 gem 'pg', '~> 1.5', '>= 1.5.6'
 gem 'redis', '~> 5.2'
 gem 'tzinfo', '~> 2.0'
+gem 'redcarpet', '~> 3.6'
 
 gem 'sinatra', '~> 4.0'
 gem 'rackup', '~> 2.1'

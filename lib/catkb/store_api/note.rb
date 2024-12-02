@@ -12,6 +12,8 @@ class CatKB::StoreApi
     data = CatKB.db[:notes].where(id: id).first
     halt 404 if data.nil?
 
+    data[:body_html] = CatKB.render_markdown(data[:body])
+
     json(data)
   end
 

@@ -12,6 +12,7 @@ class CatKB::StoreApi
     data = CatKB.db[:parts].where(id: id).first
     halt 404 if data.nil?
 
+    data[:description_html] = CatKB.render_markdown(data[:description])
     data[:barcodes] = CatKB.db[:barcode_pointers].where(ptr_type: 'part', ptr_id: id).map {|n| n[:id]}
     data[:within] = CatKB.db[:container_contents].where(ptr_type: 'part', ptr_id: id).map {|n| n[:container]}
 
