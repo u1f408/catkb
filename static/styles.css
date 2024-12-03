@@ -70,14 +70,24 @@ ul.actionbar > li a {
     min-height: 1rem;
     padding: 1rem;
     margin-bottom: 1rem;
-}
 
-.notebody p {
-    margin: 0;
-}
+    p {
+        margin: 0;
+    }
 
-.notebody p:not(:last-child) {
-    margin-bottom: 1rem;
+    blockquote {
+        margin: 0 0 0 0.5rem;
+        padding: 0 0 0 0.75rem;
+        border-left: 3px solid #8c8c8c;
+    }
+
+    ul, ol {
+        padding-left: 1.25rem;
+    }
+
+    p:not(:last-child), blockquote:not(:last-child) {
+        margin-bottom: 1rem;
+    }
 }
 
 .bigform {
@@ -99,6 +109,20 @@ ul.actionbar > li a {
     height: 6rem;
     height: auto;
     float: right;
+}
+
+.attrimage {
+    display: inline-flex;
+    text-decoration: none;
+    border: 1px solid #000;
+    border-radius: 3px;
+    padding: 0.5rem;
+    margin: 0 0.5rem 0.5rem 0;
+}
+
+.attrimage > img {
+    margin: 0;
+    padding: 0;
 }
 
 .message {

@@ -33,6 +33,20 @@
         await invalidateAll();
         return await goto(`/project/${data.id}`);
     }
+
+    function submitRemove(ctrid: string, childid: string) {
+        return async function submitRemoveInner() {
+            error = null;
+            try {
+                await storeDelete({ fetch }, ['container', ctrid, 'children', childid]);
+            } catch (nex: any) {
+                error = `??? ${nex.toString()}`;
+                return;
+            }
+
+            await invalidateAll();
+        }
+    }
 </script>
 
 <svelte:head>
@@ -44,14 +58,20 @@
     Contain: {data.title}
 </h1>
 
-{#if data.within.length}
-    <div class="message warning">
-        Already in one or more containers:
-        {#each data.within as ctr}
-            <a href="/container/{ctr}">{ctr}</a>
-        {/each}
-    </div>
-{/if}
-
 {#if error}<div class="message error">{error}</div>{/if}
 <BarcodeInput onscan={submit} />
+
+{#if data.within.length}
+    <strong>Contained within:</strong>
+
+    <ul>
+    {#each data.within as ctr}
+        <li>
+            <code>{ctr}</code>
+
+            <br>
+            <button onclick={submitRemove(ctr.id, ctr.child)}>Remove</button>
+        </li>
+    {/each}
+    </ul>
+{/if}

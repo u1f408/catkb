@@ -20,6 +20,7 @@
     <li><a href="/part/{data.id}/edit">Edit</a></li>
     <li><a href="/part/{data.id}/barcode">Barcode</a></li>
     <li><a href="/part/{data.id}/contain">Contain</a></li>
+    <li><a href="/part/{data.id}/images">Images</a></li>
 </ActionBar>
 
 <ul class="attrlist">
@@ -32,7 +33,7 @@
         <li>
             <strong>Found in:</strong>
             {#each data.within as ctr}
-                <a href="/container/{ctr}">{ctr}</a>
+                <a href="/container/{ctr.id}">{ctr.id}</a>
             {/each}
         </li>
     {/if}
@@ -40,4 +41,14 @@
 
 {#if data.description_html}
     <div class="notebody">{@html data.description_html}</div>
+{/if}
+
+{#if data.images.length}
+    <div class="attrimage-container">
+        {#each data.images as image}
+            <a href="{image.image_url}" target="_blank" class="attrimage">
+                <img src="{image.thumb_url}" alt="{image.id}" title="{image.id}">
+            </a>
+        {/each}
+    </div>
 {/if}
