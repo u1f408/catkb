@@ -1,0 +1,21 @@
+{
+    debug
+    admin off
+}
+
+:9000 {
+    handle /v1/* {
+        reverse_proxy localhost:9292
+    }
+
+    handle_path /v0/imagestore/* {
+        root ../catkb-storage/
+        file_server
+    }
+
+    handle {
+        root ../catkb-web/build/
+        try_files {path} {path}/ /index.html
+        file_server
+    }
+}

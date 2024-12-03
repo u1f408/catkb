@@ -39,6 +39,7 @@ module CatKB
 end
 
 require_relative 'store_api/search'
+require_relative 'store_api/image'
 require_relative 'store_api/barcode'
 require_relative 'store_api/container'
 require_relative 'store_api/project'

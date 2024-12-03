@@ -77,3 +77,24 @@ create table if not exists package_tracking_updates (
 alter table only package_tracking_updates alter column id set default generate_id();
 alter table package_tracking_updates drop constraint if exists package_tracking_updates_track_no_fk;
 alter table package_tracking_updates add constraint package_tracking_updates_track_no_fk foreign key (track_no) references package_tracking (track_no) on update cascade on delete cascade;
+
+create table if not exists images (
+    id text primary key default generate_id(),
+    original_name text not null,
+    original_size_bytes bigint not null,
+    width integer,
+    height integer,
+    image_fn text,
+    thumb_fn text,
+    updated timestamp not null default NOW()::timestamp
+);
+
+create table if not exists image_links (
+    id text primary key default generate_id(),
+    image text not null,
+    ptr_type text not null,
+    ptr_id text not null
+);
+
+alter table image_links drop constraint if exists image_links_image_fk;
+alter table image_links add constraint image_links_image_fk foreign key (image) references images (id) on update cascade on delete cascade;
