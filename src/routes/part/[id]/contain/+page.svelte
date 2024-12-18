@@ -67,7 +67,7 @@
     <ul>
     {#each data.within as ctr}
         <li>
-            <code>{ctr}</code>
+            <code>{ctr.id}</code>
 
             <br>
             <button onclick={submitRemove(ctr.id, ctr.child)}>Remove</button>
