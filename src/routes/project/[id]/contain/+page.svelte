@@ -1,7 +1,7 @@
 <script lang="ts">
     import HeaderParentLink from '$components/HeaderParentLink.svelte';
     import BarcodeInput from '$components/BarcodeInput.svelte';
-    import { storeFetch, storePost } from '$lib/storeFetch';
+    import { storeFetch, storePost, storeDelete } from '$lib/storeFetch';
     import { goto, invalidateAll } from '$app/navigation';
     import type { PageData } from './$types';
 
