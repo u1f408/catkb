@@ -13,7 +13,9 @@ class CatKB::StoreApi
     halt 404 if data.nil?
 
     data[:barcodes] = CatKB.db[:barcode_pointers].where(ptr_type: 'container', ptr_id: id).map {|n| n[:id]}
-    data[:within] = CatKB.db[:container_contents].where(ptr_type: 'container', ptr_id: id).map {|n| n[:container]}
+    data[:within] = CatKB.db[:container_contents].where(ptr_type: 'container', ptr_id: id).map do |n|
+      { id: n[:container], child: n[:id] }
+    end
 
     if request.params['with_children']
       data[:children] = CatKB.db[:container_contents].where(container: id).map do |ptr|
