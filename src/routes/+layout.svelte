@@ -8,19 +8,25 @@
     import { storeFetch } from '$lib/storeFetch';
 
     let showScan = false;
-
+    let scanError: string | null = null;
     async function scanRedirect(input: string) {
         var data = null;
+        scanError = null;
+
         try {
             data = await storeFetch({ fetch }, ['barcode'], { id: input });
         } catch (ex) {
             console.error(ex);
+            scanError = ex.message;
             return;
         }
 
-        if (data) {
-            return await goto(`/${data.ptr_type}/${data.ptr_id}`);
+        if (!data) {
+            scanError = "Couldn't find a pointer for that barcode!";
+            return;
         }
+
+        return await goto(`/${data.ptr_type}/${data.ptr_id}`);
     }
 </script>
 
@@ -50,6 +56,9 @@
 
 <Modal bind:show={showScan}>
     <BarcodeInput onscan={scanRedirect} autofocus={true} />
+    {#if scanError}
+        <div class="message message-error">{scanError}</div>
+    {/if}
 </Modal>
 
 <header class="main-nav">
