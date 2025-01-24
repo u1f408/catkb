@@ -38,13 +38,20 @@ class CatKB::StoreApi
     CatKB::PackageTrackingUpdateSingleWorker.perform_sync(patch[:track_no])
 
     data = CatKB.db[:package_tracking].where(track_no: patch[:track_no]).first
+    data[:carrier_friendly] = CatKB::PackageTracking::CARRIER_NAMES[data[:carrier].to_sym]
+    data[:canonical_url] = CatKB::PackageTracking.send(:"canonical_#{data[:carrier]}", data[:track_no])
+
     json(data)
   end
 
   get '/v1/package_tracking/:tn' do |tn|
     data = CatKB.db[:package_tracking].where(track_no: tn).first
     next halt 404 unless data
+
+    data[:carrier_friendly] = CatKB::PackageTracking::CARRIER_NAMES[data[:carrier].to_sym]
+    data[:canonical_url] = CatKB::PackageTracking.send(:"canonical_#{data[:carrier]}", data[:track_no])
     data[:updates] = CatKB.db[:package_tracking_updates].where(track_no: tn).order(Sequel.desc(:updated)).all
+
     json(data)
   end
 
@@ -54,7 +61,10 @@ class CatKB::StoreApi
 
     CatKB::PackageTrackingUpdateSingleWorker.perform_sync(tn)
 
+    data[:carrier_friendly] = CatKB::PackageTracking::CARRIER_NAMES[data[:carrier].to_sym]
+    data[:canonical_url] = CatKB::PackageTracking.send(:"canonical_#{data[:carrier]}", data[:track_no])
     data[:updates] = CatKB.db[:package_tracking_updates].where(track_no: tn).order(Sequel.desc(:updated)).all
+
     json(data)
   end
 

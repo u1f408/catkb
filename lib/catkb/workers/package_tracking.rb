@@ -4,6 +4,11 @@ require 'tzinfo'
 module CatKB
   module PackageTracking
     UA_GENERIC = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'.freeze
+    CARRIER_NAMES = {
+      nzpost: 'NZ Post'.freeze,
+      aramexnz: 'Aramex New Zealand'.freeze,
+    }
+
     module_function
 
     def guess_carrier(track_no)
@@ -62,6 +67,10 @@ module CatKB
       }
     end
 
+    def canonical_aramexnz(track_no)
+      "https://www.aramex.co.nz/tools/track?l=#{track_no}"
+    end
+
     def fetch_nzpost(track_no)
       track_no.upcase!
 
@@ -112,6 +121,10 @@ module CatKB
         track_no: track_no,
         updates: scans,
       }
+    end
+
+    def canonical_nzpost(track_no)
+      "https://www.nzpost.co.nz/tools/tracking?trackid=#{track_no}"
     end
   end
 
