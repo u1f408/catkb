@@ -40,7 +40,7 @@
                     </a> -
                     {#if obj.latest_update}
                         {obj.latest_update.description} -
-                        <Timestamp date={new Date(obj.latest_update.updated)} />
+                        <Timestamp date={obj.latest_update.updated} />
                     {:else}
                         No updates (yet!)
                     {/if}
@@ -65,7 +65,7 @@
                     </a> -
                     {#if obj.latest_update}
                         {obj.latest_update.description} -
-                        <Timestamp date={new Date(obj.latest_update.updated)} />
+                        <Timestamp date={obj.latest_update.updated} />
                     {:else}
                         No updates!?
                     {/if}
@@ -90,7 +90,7 @@
                     </a> -
                     {#if obj.latest_update}
                         {obj.latest_update.description} -
-                        <Timestamp date={new Date(obj.latest_update.updated)} />
+                        <Timestamp date={obj.latest_update.updated} />
                     {:else}
                         No updates!?
                     {/if}

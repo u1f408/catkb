@@ -46,7 +46,7 @@
     {#if data.marked}
         <li>
             <strong>Marked:</strong>
-            <Timestamp date={new Date(data.marked)} />
+            <Timestamp date={data.marked} />
         </li>
     {/if}
 
@@ -70,7 +70,7 @@
 
     <li>
         <strong>Last fetched:</strong>
-        <Timestamp date={new Date(data.updated)} />
+        <Timestamp date={data.updated} />
     </li>
 
     <li>
@@ -84,7 +84,7 @@
                     <strong>{obj.status}</strong>:
                     <span>{obj.description}</span>
                     &mdash;
-                    <Timestamp date={new Date(obj.updated)} />
+                    <Timestamp date={obj.updated} />
                 </li>
             {/each}
         </ul>
