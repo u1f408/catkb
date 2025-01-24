@@ -1,7 +1,13 @@
 <script lang="ts">
     import BarcodeInput from '$components/BarcodeInput.svelte';
+    import Modal from '$components/Modal.svelte';
+    import { Icon } from 'svelte-icons-pack'
+    import { AiOutlineBarcode } from 'svelte-icons-pack/ai';
+
     import { goto } from '$app/navigation';
     import { storeFetch } from '$lib/storeFetch';
+
+    let showScan = false;
 
     async function scanRedirect(input: string) {
         var data = null;
@@ -27,20 +33,32 @@
         gap: 1rem;
     }
 
-    header > a {
+    header a {
         color: #000;
         text-decoration: none;
         font-weight: bold;
     }
 
-    header > a:visited {
+    header a:visited {
         color: inherit;
+    }
+
+    header .main-nav-right {
+        margin: 0 0 0 auto;
     }
 </style>
 
+<Modal bind:show={showScan}>
+    <BarcodeInput onscan={scanRedirect} autofocus={true} />
+</Modal>
+
 <header class="main-nav">
     <a href="/">CatKB</a>
-    <BarcodeInput onscan={scanRedirect} />
+    <div class="main-nav-right">
+        <a href="?" onclick={() => showScan = true}>
+            <Icon src={AiOutlineBarcode} />
+        </a>
+    </div>
 </header>
 
 <main>

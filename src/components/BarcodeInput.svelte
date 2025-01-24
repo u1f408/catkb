@@ -2,10 +2,11 @@
     type ScanHandler = (input: string) => void;
     interface BarcodeInputProps {
         placeholder?: string;
+        autofocus?: bool;
         onscan: ScanHandler;
     }
 
-    let { placeholder, onscan }: BarcodeInputProps = $props();
+    let { placeholder, onscan, autofocus }: BarcodeInputProps = $props();
     placeholder = placeholder || "Scan a barcode...";
 
     function handleSubmit(ev: SubmitEvent) {
@@ -19,7 +20,8 @@
 </script>
 
 <form onsubmit={handleSubmit}>
-    <input name="scanInput" type="text" placeholder={placeholder}>
+    <!-- svelte-ignore a11y_autofocus -->
+    <input name="scanInput" type="text" placeholder={placeholder} autofocus={autofocus ?? false}>
 </form>
 
 <style>
