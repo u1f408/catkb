@@ -112,6 +112,14 @@ ul.actionbar > li a {
     float: right;
 }
 
+.barcodeDisplayFull {
+    display: block;
+    padding: 0.5rem;
+    width: 100%;
+    min-height: 6rem;
+    height: auto;
+}
+
 .attrimage {
     display: inline-flex;
     text-decoration: none;

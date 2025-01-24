@@ -1,8 +1,11 @@
 <script lang="ts">
     import ActionBar from '$components/ActionBar.svelte';
+    import Modal from '$components/Modal.svelte';
 
     import type { PageData } from './$types';
     export let data: PageData;
+
+    let imageToggles = Object.fromEntries(Array.from(data.images).map((i) => [i.id, false]));
 </script>
 
 <svelte:head>
@@ -41,9 +44,21 @@
 {#if data.images.length}
     <div class="attrimage-container">
         {#each data.images as image}
-            <a href="{image.image_url}" target="_blank" class="attrimage">
-                <img src="{image.thumb_url}" alt="{image.id}" title="{image.id}">
+            <a href="?" class="attrimage" onclick={() => imageToggles[image.id] = !imageToggles[image.id]}>
+                <img src={image.thumb_url} alt={image.id} title={image.id}>
             </a>
+
+            <Modal bind:show={imageToggles[image.id]}>
+                <div style="text-align:center">
+                    <div style="margin-bottom:1rem">
+                        <a href={image.image_url} target="_blank">
+                            <code>{image.id}</code>
+                        </a>
+                    </div>
+
+                    <img src={image.image_url} style="height:auto;width:100%;" alt={image.id} title={image.id}>
+                </div>
+            </Modal>
         {/each}
     </div>
 {/if}

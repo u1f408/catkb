@@ -1,6 +1,7 @@
 <script lang="ts">
     import BarcodeInput from '$components/BarcodeInput.svelte';
     import ActionBar from '$components/ActionBar.svelte';
+    import Timestamp from '$components/Timestamp.svelte';
     import { goto } from '$app/navigation';
 
     import type { PageData } from './$types';
@@ -38,8 +39,8 @@
                         {/if}
                     </a> -
                     {#if obj.latest_update}
-                        {obj.latest_update.description}
-                        ({obj.latest_update.updated})
+                        {obj.latest_update.description} -
+                        <Timestamp date={new Date(obj.latest_update.updated)} />
                     {:else}
                         No updates (yet!)
                     {/if}
@@ -63,8 +64,8 @@
                         {/if}
                     </a> -
                     {#if obj.latest_update}
-                        {obj.latest_update.description}
-                        ({obj.latest_update.updated})
+                        {obj.latest_update.description} -
+                        <Timestamp date={new Date(obj.latest_update.updated)} />
                     {:else}
                         No updates!?
                     {/if}
@@ -88,8 +89,8 @@
                         {/if}
                     </a> -
                     {#if obj.latest_update}
-                        {obj.latest_update.description}
-                        ({obj.latest_update.updated})
+                        {obj.latest_update.description} -
+                        <Timestamp date={new Date(obj.latest_update.updated)} />
                     {:else}
                         No updates!?
                     {/if}

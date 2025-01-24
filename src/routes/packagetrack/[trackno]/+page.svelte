@@ -1,10 +1,14 @@
 <script lang="ts">
     import HeaderParentLink from '$components/HeaderParentLink.svelte';
     import ActionBar from '$components/ActionBar.svelte';
+    import Modal from '$components/Modal.svelte';
+    import Timestamp from '$components/Timestamp.svelte';
     import { storePost } from '$lib/storeFetch';
 
     import type { PageData } from './$types';
     export let data: PageData;
+
+    let barcodeModalShow = false;
 
     async function forceRefresh() {
         data = await storePost({ fetch }, ['package_tracking', data.track_no], {});
@@ -12,7 +16,7 @@
 </script>
 
 <svelte:head>
-    <title>Package: {data.track_no} ({data.carrier})</title>
+    <title>Package: {data.track_no} ({data.carrier_friendly})</title>
 </svelte:head>
 
 <h1>
@@ -20,13 +24,14 @@
     Package:
     {#if data.notes}
         {data.notes}
-    {/if}{#if !data.notes}
-        <code>{data.track_no}</code> ({data.carrier})
+    {:else}
+        <code>{data.track_no}</code> ({data.carrier_friendly})
     {/if}
 </h1>
 
 <ActionBar>
     <li><a href="/packagetrack/{data.track_no}/edit">Edit</a></li>
+    <li><a href="?" onclick={() => barcodeModalShow = true}>Show barcode</a></li>
     <li><a href="?" onclick={forceRefresh}>Force refresh</a></li>
 </ActionBar>
 
@@ -41,23 +46,31 @@
     {#if data.marked}
         <li>
             <strong>Marked:</strong>
-            {data.marked}
+            <Timestamp date={new Date(data.marked)} />
         </li>
     {/if}
 
     <li>
         <strong>Tracking number:</strong>
-        <code>{data.track_no}</code>
+
+        {#if data.canonical_url}
+            <a href={data.canonical_url} target="_blank">
+                <code>{data.track_no}</code>
+            </a>
+        {:else}
+            <code>{data.track_no}</code>
+        {/if}
     </li>
 
     <li>
         <strong>Carrier:</strong>
-        <code>{data.carrier}</code>
+        <span>{data.carrier_friendly}</span>
+        (<code>{data.carrier}</code>)
     </li>
 
     <li>
         <strong>Last fetched:</strong>
-        {data.updated}
+        <Timestamp date={new Date(data.updated)} />
     </li>
 
     <li>
@@ -70,9 +83,20 @@
                 <li>
                     <strong>{obj.status}</strong>:
                     <span>{obj.description}</span>
-                    ({obj.updated})
+                    &mdash;
+                    <Timestamp date={new Date(obj.updated)} />
                 </li>
             {/each}
         </ul>
     </li>
 </ul>
+
+<Modal bind:show={barcodeModalShow}>
+    <div style="text-align:center">
+        <strong>{data.carrier_friendly}</strong>
+        <aside class="barcodeDisplayFull" style="margin-top:1rem">
+            {@html data.barcode_svg}
+        </aside>
+        <code>{data.track_no}</code>
+    </div>
+</Modal>
