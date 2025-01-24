@@ -1,10 +1,13 @@
 class CatKB::StoreApi
   get '/v1/barcode.svg' do
     barcode = request.params['id']&.strip
-    cached = CatKB.cache.hget("barcode_cache", barcode)
+    fmt = request.params['fmt']&.strip&.to_sym || :aztec
+
+    cache_key = "#{barcode}_#{fmt.to_s}"
+    cached = CatKB.cache.hget("barcode_cache", cache_key)
     unless cached
-      cached = CatKB.generate_barcode_svg(barcode)
-      CatKB.cache.hset("barcode_cache", barcode, cached)
+      cached = CatKB.generate_barcode_svg(barcode, fmt)
+      CatKB.cache.hset("barcode_cache", cache_key, cached)
     end
 
     content_type 'image/svg+xml'
