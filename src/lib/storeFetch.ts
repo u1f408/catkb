@@ -13,6 +13,7 @@ export async function storeFetchPlain({ fetch }: StoreParams, path: string[], pa
 
 export async function storeFetch({ fetch }: StoreParams, path: string[], params = {}) {
     let req = await storeFetchPlain({ fetch }, path, params);
+    if (req.status === 404) throw new Error("404");
     return await req.json();
 }
 

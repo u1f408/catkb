@@ -15,14 +15,10 @@
 
         try {
             data = await storeFetch({ fetch }, ['barcode'], { id: input });
+            if (!data) throw new Error("no data");
         } catch (ex) {
             console.error(ex);
             scanError = ex.message;
-            return;
-        }
-
-        if (!data) {
-            scanError = "Couldn't find a pointer for that barcode!";
             return;
         }
 
@@ -57,7 +53,7 @@
 <Modal bind:show={showScan}>
     <BarcodeInput onscan={scanRedirect} autofocus={true} />
     {#if scanError}
-        <div class="message message-error">{scanError}</div>
+        <div class="message error">{scanError}</div>
     {/if}
 </Modal>
 
