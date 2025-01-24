@@ -57,6 +57,8 @@
 
     header .main-nav-right {
         margin: 0 0 0 auto;
+        display: flex;
+        flex-flow: row nowrap;
     }
 
     header .main-nav-btn {
