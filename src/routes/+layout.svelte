@@ -22,6 +22,7 @@
             return;
         }
 
+        showScan = false;
         return await goto(`/${data.ptr_type}/${data.ptr_id}`);
     }
 </script>
