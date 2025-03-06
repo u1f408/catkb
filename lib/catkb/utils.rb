@@ -5,7 +5,8 @@ module CatKB
     :note => { strip: %i[body], remove: %i[body_html], },
     :container => { strip: %i[location], },
     :container_contents => { remove: %i[container], },
-    :project => { strip: %i[description], remove: %i[description_html], },
+    :project => { strip: %i[description], remove: %i[description_html updates], },
+    :project_update => { strip: %i[description], remove: %i[project description_html], },
     :part => { strip: %i[description], remove: %i[description_html], },
     :package_tracking => { remove: %i[track_no carrier updates updated], },
   }
@@ -21,7 +22,7 @@ module CatKB
   end
 
   def cleanup_patch(ty, patch)
-    %i[id barcodes within].map{ |n| patch.delete(n) }
+    %i[id barcodes within images].map{ |n| patch.delete(n) }
     CatKB::PATCH_CLEANUP_OPTS[ty]&.[](:remove)&.map { |n| patch.delete(n) }
     CatKB::PATCH_CLEANUP_OPTS[ty]&.[](:strip)&.map { |n| patch[n] = patch[n]&.strip }
 

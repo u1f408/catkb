@@ -2,20 +2,26 @@ class CatKB::StoreApi
   get '/v1/package_tracking/+waiting' do
     limit = request.params['limit']&.to_i || 10
 
-    undelivered = CatKB.db[:package_tracking].where(completed: false, marked: nil).order(Sequel.desc(:updated)).limit(limit).all
+    undelivered = CatKB.db[:package_tracking].where(completed: false, marked: nil, direction: 'incoming').order(Sequel.desc(:updated)).limit(limit).all
     undelivered.map! do |p|
       p[:latest_update] = CatKB.db[:package_tracking_updates].where(track_no: p[:track_no]).order(Sequel.desc(:updated)).first
       p
     end
 
-    unmarked = CatKB.db[:package_tracking].where(completed: true, marked: nil).order(Sequel.desc(:updated)).limit(limit).all
+    unmarked = CatKB.db[:package_tracking].where(completed: true, marked: nil, direction: 'incoming').order(Sequel.desc(:updated)).limit(limit).all
     unmarked.map! do |p|
       p[:latest_update] = CatKB.db[:package_tracking_updates].where(track_no: p[:track_no]).order(Sequel.desc(:updated)).first
       p
     end
 
-    recent = CatKB.db[:package_tracking].where(completed: true).exclude(marked: nil).order(Sequel.desc(:updated)).limit(limit).all
+    recent = CatKB.db[:package_tracking].where(completed: true, direction: 'incoming').exclude(marked: nil).order(Sequel.desc(:updated)).limit(limit).all
     recent.map! do |p|
+      p[:latest_update] = CatKB.db[:package_tracking_updates].where(track_no: p[:track_no]).order(Sequel.desc(:updated)).first
+      p
+    end
+
+    outgoing = CatKB.db[:package_tracking].where(direction: 'outgoing').order(Sequel.desc(:updated)).limit(limit).all
+    outgoing.map! do |p|
       p[:latest_update] = CatKB.db[:package_tracking_updates].where(track_no: p[:track_no]).order(Sequel.desc(:updated)).first
       p
     end
@@ -24,6 +30,7 @@ class CatKB::StoreApi
       undelivered: undelivered,
       unmarked: unmarked,
       recent: recent,
+      outgoing: outgoing,
     })
   end
 

@@ -66,6 +66,8 @@ create table if not exists package_tracking (
     updated timestamp not null default NOW()::timestamp
 );
 
+alter table package_tracking add column if not exists direction text not null default 'incoming' check (direction = any (array['incoming', 'outgoing']));
+
 create table if not exists package_tracking_updates (
     id text primary key,
     track_no text not null,
@@ -98,3 +100,14 @@ create table if not exists image_links (
 
 alter table image_links drop constraint if exists image_links_image_fk;
 alter table image_links add constraint image_links_image_fk foreign key (image) references images (id) on update cascade on delete cascade;
+
+create table if not exists project_updates (
+    id text primary key default generate_id(),
+    project text not null,
+    description text,
+    created timestamp not null default NOW()::timestamp,
+    updated timestamp not null default NOW()::timestamp
+);
+
+alter table project_updates drop constraint if exists project_updates_project_fk;
+alter table project_updates add constraint project_updates_project_fk foreign key (project) references projects (id) on update cascade on delete cascade;
