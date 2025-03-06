@@ -32,24 +32,27 @@
     Images: {data.title}
 </h1>
 
-{#if error}<div class="message error">{error}</div>{/if}
-<ImageUpload linkType="project" linkId="{data.id}" />
+<div>
+    <strong>Upload image</strong>
+    {#if error}<div class="message error">{error}</div>{/if}
+    <ImageUpload linkType="project" linkId={data.id} />
+</div>
 
 {#if data.images.length}
-    <strong>Existing images:</strong>
-
-    <ul>
-    {#each data.images as img}
-        <li>
+    <strong>Existing images</strong>
+    <div class="attrimage-container">
+        {#each data.images as img}
             <div class="attrimage">
-                <img src="{img.thumb_url}" alt="{img.id}">
+                <div class="attrimage-innertext">
+                    <code>{img.id}</code>
+                </div>
+                <a href={img.image_url} target="_blank">
+                    <img src={img.thumb_url} alt={img.id} title={img.id}>
+                </a>
+                <div class="attrimage-innertext">
+                    <button on:click={submitRemove(img.id, img.child)}>Remove</button>
+                </div>
             </div>
-            <br>
-            <code>{img.id}</code>
-
-            <br>
-            <button onclick={submitRemove(img.id, img.child)}>Remove</button>
-        </li>
-    {/each}
-    </ul>
+        {/each}
+    </div>
 {/if}

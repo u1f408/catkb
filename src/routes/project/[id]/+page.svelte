@@ -4,8 +4,6 @@
 
     import type { PageData } from './$types';
     export let data: PageData;
-
-    let imageToggles = Object.fromEntries(Array.from(data.images).map((i) => [i.id, false]));
 </script>
 
 <svelte:head>
@@ -23,7 +21,13 @@
     <li><a href="/project/{data.id}/edit">Edit</a></li>
     <li><a href="/project/{data.id}/barcode">Barcode</a></li>
     <li><a href="/project/{data.id}/contain">Contain</a></li>
-    <li><a href="/project/{data.id}/images">Images</a></li>
+    <li><a href="/project/{data.id}/update">Add update</a></li>
+    <li>
+        <a href="/project/{data.id}/images">
+            Images
+            {#if data.images.length}({data.images.length}){/if}
+        </a>
+    </li>
 </ActionBar>
 
 <ul class="attrlist">
@@ -41,24 +45,20 @@
     <div class="notebody">{@html data.description_html}</div>
 {/if}
 
-{#if data.images.length}
-    <div class="attrimage-container">
-        {#each data.images as image}
-            <a href="?" class="attrimage" onclick={() => imageToggles[image.id] = !imageToggles[image.id]}>
-                <img src={image.thumb_url} alt={image.id} title={image.id}>
-            </a>
-
-            <Modal bind:show={imageToggles[image.id]}>
-                <div style="text-align:center">
-                    <div style="margin-bottom:1rem">
-                        <a href={image.image_url} target="_blank">
-                            <code>{image.id}</code>
-                        </a>
-                    </div>
-
-                    <img src={image.image_url} style="height:auto;width:100%;" alt={image.id} title={image.id}>
+{#if data.updates.length}
+    <div class="projectUpdates">
+        {#each data.updates as upd (upd.id)}
+            <div class="projectUpdate" data-id={upd.id}>
+                <h3><a href="/project/{data.id}/update/{upd.id}">{upd.created}</a></h3>
+                <div class="projectUpdate-body notebody">
+                    {@html upd.description_html}
+                    {#if upd.images.length}
+                        <p>
+                            <a href="/project/{data.id}/update/{upd.id}#updImages">({upd.images.length} images)</a>
+                        </p>
+                    {/if}
                 </div>
-            </Modal>
+            </div>
         {/each}
     </div>
 {/if}

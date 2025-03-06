@@ -99,3 +99,28 @@
         </ul>
     </section>
 {/if}
+
+{#if data.outgoing.length > 0}
+    <section>
+        <strong>Latest outgoing packages:</strong>
+        <ul>
+            {#each data.outgoing as obj (obj.track_no)}
+                <li>
+                    <a href="/packagetrack/{obj.track_no}">
+                        {#if obj.notes}
+                            {obj.notes}
+                        {:else}
+                            <code>{obj.track_no}</code> ({obj.carrier})
+                        {/if}
+                    </a> -
+                    {#if obj.latest_update}
+                        {obj.latest_update.description} -
+                        <Timestamp date={obj.latest_update.updated} />
+                    {:else}
+                        No updates!?
+                    {/if}
+                </li>
+            {/each}
+        </ul>
+    </section>
+{/if}

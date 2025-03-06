@@ -16,7 +16,6 @@
 </ActionBar>
 
 <ActionBar title="Tools">
-    <li><a href="/search">Search</a></li>
     <li><a href="/sn">SN lookups</a></li>
     <li><a href="/packagetrack">Package tracking</a></li>
 </ActionBar>

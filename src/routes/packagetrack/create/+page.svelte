@@ -45,6 +45,12 @@
         <option value="aramexnz">Aramex New Zealand (aramexnz)</option>
     </select>
 
+    <label for="direction">Direction:</label>
+    <select id="direction" name="direction">
+        <option value="incoming">Incoming</option>
+        <option value="outgoing">Outgoing</option>
+    </select>
+
     <label for="notes">Notes:</label>
     <input type="text" id="notes" name="notes" placeholder="Notes">
 
