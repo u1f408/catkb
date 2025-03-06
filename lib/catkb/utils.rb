@@ -7,7 +7,7 @@ module CatKB
     :container_contents => { remove: %i[container], },
     :project => { strip: %i[description], remove: %i[description_html updates], },
     :project_update => { strip: %i[description], remove: %i[project description_html], },
-    :part => { strip: %i[description], remove: %i[description_html], },
+    :part => { strip: %i[description generic_type form_factor], remove: %i[description_html], },
     :package_tracking => { remove: %i[track_no carrier updates updated], },
   }
 

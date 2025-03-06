@@ -36,6 +36,12 @@
     <label for="count_onhand">On hand:</label>
     <input type="number" id="count_onhand" name="count_onhand" min="0" step="1">
 
+    <label for="generic_type">Type (generic):</label>
+    <input type="text" id="generic_type" name="generic_type" placeholder="Type (generic)">
+
+    <label for="form_factor">Form factor:</label>
+    <input type="text" id="form_factor" name="form_factor" placeholder="Form factor">
+
     <label for="description">Description:</label>
     <textarea name="description" id="description"></textarea>
 

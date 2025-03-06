@@ -32,6 +32,20 @@
         {data.count_onhand}
     </li>
 
+    {#if data.generic_type}
+        <li>
+            <strong>Type (generic):</strong>
+            {data.generic_type}
+        </li>
+    {/if}
+
+    {#if data.form_factor}
+        <li>
+            <strong>Form factor:</strong>
+            {data.form_factor}
+        </li>
+    {/if}
+
     {#if data.within.length}
         <li>
             <strong>Found in:</strong>

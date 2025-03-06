@@ -28,6 +28,8 @@ create table if not exists parts (
 );
 
 alter table only parts alter column id set default generate_id();
+alter table parts add column if not exists generic_type text default null;
+alter table parts add column if not exists form_factor text default null;
 
 create table if not exists containers (
     id text primary key,
